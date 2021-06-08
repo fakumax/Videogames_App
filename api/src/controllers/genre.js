@@ -1,10 +1,12 @@
 const axios = require('axios');
 const { Genre } = require('../db');
 const { GENRES_URL } = require('../constants');
+const {API_KEY} = process.env;
+
 
 async function getAllGenreAPI(req, res, next) {
   try {
-    const { data } = await axios.get(`${GENRES_URL}`); //, {
+    const { data } = await axios.get(`${GENRES_URL}${API_KEY}`); //, {
     const results = await data.results.map((valor) =>
       Genre.findOrCreate({
         where: {

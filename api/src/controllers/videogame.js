@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Videogame, Genre } = require('../db');
+const { Videogame, Genre, Platform } = require('../db');
 const { GAMES_URL } = require('../constants');
 const { API_KEY } = process.env;
 const { Sequelize } = require('sequelize');
@@ -68,12 +68,11 @@ async function getAllVideogames(req, res, next) {
         },
       },
     });
-
     const { data } = await axios.get(`${GAMES_URL}${API_KEY}`);
     const resp = data.results.map((game) => ({
       id: game.id,
       name: game.name,
-      image: game.background_image,
+      img: game.background_image,
       genres: game.genres.map((genre) => ({ id: genre.id, name: genre.name })),
       rating: game.rating,
     }));
@@ -84,7 +83,7 @@ async function getAllVideogames(req, res, next) {
   }
 }
 
-/* Async Function Get GAME ID */
+/* Async Function Get VIDEOGAME ID */
 async function getVideogameId(req, res, next) {
   const { id } = req.params;
   try {
@@ -121,7 +120,7 @@ async function getVideogameId(req, res, next) {
           id: platform.platform.id,
           name: platform.platform.name,
         })),
-        background_image: data.background_image,
+        img: data.background_image,
       });
     }
   } catch (err) {
@@ -132,7 +131,7 @@ async function getVideogameId(req, res, next) {
 /* Async Function Post VIDEOGAME  */
 async function postVideogame(req, res, next) {
   const videogame = req.body;
-  console.log('in the api now', videogame);
+  //console.log('in the api now', videogame);
   // const { name, description, release, rating, platforms } = req.body;
   // console.log( req.body);
   try {
@@ -151,8 +150,9 @@ async function postVideogame(req, res, next) {
       ...videogame,
     });
     const genres = videogame.genres.map((genre) => genre.id);
-    console.log('genres after map', genres);
+    const platform = videogame.platforms.map((platform) => ({id:platform.id,name:platform.name}))
     game.addGenres(genres); //[4,5]saco los id y los inserto en la tabla, asociando al game
+    game.addGenres(platform); 
     return res.send(game);
   } catch (error) {
     next(error);
