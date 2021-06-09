@@ -28,7 +28,15 @@ async function getAllGenreAPI(req, res, next) {
 
 // --- Values from platform
 async function funcName() {
-  console.log("test");
+
+ const { data } = await axios.get( `https://api.rawg.io/api/platforms?key=506cda2ee2aa4c34b7e764ec5f4c1e08`);
+ const results = await data.results.map((valor) =>
+  ({
+   
+    name: valor.name
+  })
+);
+  return results;
 }
 
 
