@@ -150,9 +150,11 @@ async function postVideogame(req, res, next) {
       ...videogame,
     });
     const genres = videogame.genres.map((genre) => genre.id);
-    const platform = videogame.platforms.map((platform) => ({id:platform.id,name:platform.name}))
+    const platform = videogame.platforms.map((platform) =>  platform.id)
+    console.log(genres);
+    console.log(platform);
+    game.addPlatform(platform); 
     game.addGenres(genres); //[4,5]saco los id y los inserto en la tabla, asociando al game
-    game.addGenres(platform); 
     return res.send(game);
   } catch (error) {
     next(error);

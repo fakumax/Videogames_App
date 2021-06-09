@@ -41,6 +41,11 @@ Genre.belongsToMany(Videogame, {
   through: "videogame_genre" 
 });
 
+
+Videogame.belongsToMany(Platform, {
+  through: "videogame_platforms"
+});
+
 Platform.belongsToMany(Videogame, {
   through: "videogame_platforms" 
 });
