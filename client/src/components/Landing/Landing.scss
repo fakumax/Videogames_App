@@ -1,0 +1,32 @@
+.Landing{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../../assets/img/wallpaper.jpg') ;
+    background-position: center bottom;
+    background-size: cover;
+    background-attachment: fixed;
+  
+    img{
+        width: 10rem;
+    }
+    .GoHome{
+        color:#fff;
+        background-color: transparent;
+        padding: 1rem 2rem;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        //position: absolute ;
+        
+        &:hover{
+          
+            
+            border: 0.25rem solid yellow;
+            margin:-0.15rem;
+            cursor:pointer;
+           
+        }
+    }
+   
+}

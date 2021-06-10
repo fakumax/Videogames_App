@@ -8,7 +8,7 @@ const Landing = () => {
     <div className='Landing'>
       <h1>Welcome to Videogame Finder</h1>
       <Link to={'/home'}>
-        <button className='InsertCoin'>Go Home</button>
+        <button className='GoHome'>Go Home</button>
       </Link>
       <img className='InsertCoin' src={InsertCoin}></img>
     </div>
