@@ -2,84 +2,82 @@ const axios = require('axios');
 const { Videogame, Genre, Platform } = require('../db');
 const { GAMES_URL } = require('../constants');
 const { API_KEY } = process.env;
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 var validator = require('validator');
 
 var count = 0;
 var offsetDb = 0;
 
+async function getGamebyName(name) {
+  const { data } = await axios.get(`${GAMES_URL}${API_KEY}&search=${name}`);
+
+  const allGamesApi = data.results.map((game) => ({
+    id: game.id,
+    name: game.name,
+    img: game.background_image,
+    genres: game.genres.map((genre) => ({ id: genre.id, name: genre.name })),
+    rating: game.rating,
+  }));
+
+  const allGamesDb = await Videogame.findAll({
+    attributes: ['id', 'name', 'rating'],
+    where: {
+      name: {
+        [Op.iLike]: `%${name}%`,
+      },
+    },
+    include: {
+      model: Genre,
+      attributes: ['id', 'name'],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+  return allGamesDb ? allGamesDb.concat(allGamesApi) : allGamesApi;
+}
+
 /* Async Function Get ALL Videogame  */
 async function getAllVideogames(req, res, next) {
-  const { search } = req.query;
-  //   if (search) {
-  //     //----------------------------------------
-  //   try {
-  //       const { data } = await axios.get(`${Videogame_URL}/${name}`);
-  //       const values = {
-  //         id: data.id,
-  //         name: data.name,
-  //         types: data.types.map((v) => {return{name: v.type.name}}),
-  //         img: data.sprites.other['official-artwork'].front_default,
-  //       };
-  //       const dbData = await Videogame.findAll({ where: { name: name } });
-  //       const response = dbData.concat(values);
-  //       return res.json(response);
-  //       //----------------------------------------
-  //     } catch (err) {
-  //       const dbData = await Videogame.findAll({ where: { name: name } });
-  //       return dbData
-  //         ? res.json(dbData)
-  //         : res.status(404).json({ message: 'the Videogame has not been found.' });
-  //     }
-  //     //----------------------------------------
-  //   } else {
-
-  // Si query name está vacío entonces busca todos los resultados.
-  //try {
-  //-----------BD CONSULTA------------------
-  //   const dbData = await Videogame.findAll({
-  //     attributes: ['id', 'name'],
-  //     limit: 40,
-  //     offset: 0,
-  //     include: {
-  //       model: Type,
-  //       attributes: ['name'],
-  //       through: {
-  //         attributes: [],
-  //       },
-  //     },
-  //   });
-  //offsetDb += dbData.length;
-  //----------------------------------------
-  //const url = await axios.get(`${GAMES_URL}`);
-  //count += 40;
-  //   const filterURL = await url.data.results.map((value) =>
-  //     axios.get(`${value.url}`)
-  //   );
-  try {
-    //-----------BD CONSULTA------------------
-    const dbData = await Videogame.findAll({
-      attributes: ['id', 'name'],
-      include: {
-        model: Genre,
-        attributes: ['name'],
-        through: {
-          attributes: [],
+  const { name } = req.query;
+  if (name) {
+    //----------------------------------------
+    try {
+      const gamesByName = await getGamebyName(name);
+      res.json(gamesByName);
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    //----------------------------------------
+    try {
+      //-----------BD CONSULTA------------------
+      const dbData = await Videogame.findAll({
+        attributes: ['id', 'name', 'rating'],
+        include: {
+          model: Genre,
+          attributes: ['id', 'name'],
+          through: {
+            attributes: [],
+          },
         },
-      },
-    });
-    const { data } = await axios.get(`${GAMES_URL}${API_KEY}`);
-    const resp = data.results.map((game) => ({
-      id: game.id,
-      name: game.name,
-      img: game.background_image,
-      genres: game.genres.map((genre) => ({ id: genre.id, name: genre.name })),
-      rating: game.rating,
-    }));
-    const response = await dbData.concat(resp);
-    return res.json(response);
-  } catch (err) {
-    next(err);
+      });
+      const { data } = await axios.get(`${GAMES_URL}${API_KEY}`);
+      const resp = data.results.map((game) => ({
+        id: game.id,
+        name: game.name,
+        img: game.background_image,
+        genres: game.genres.map((genre) => ({
+          id: genre.id,
+          name: genre.name,
+        })),
+        rating: game.rating,
+      }));
+      const response = await dbData.concat(resp);
+      return res.json(response);
+    } catch (err) {
+      next(err);
+    }
   }
 }
 
@@ -102,7 +100,7 @@ async function getVideogameId(req, res, next) {
       });
       return dbData
         ? res.json(dbData)
-        : res.status(404).json({ message: 'the Game has not been found.' });
+        : res.status(404).json({ message: 'The Game has not been found.' });
     } else {
       const { data } = await axios.get(`${GAMES_URL}/${id}${API_KEY}`);
 
@@ -131,30 +129,15 @@ async function getVideogameId(req, res, next) {
 /* Async Function Post VIDEOGAME  */
 async function postVideogame(req, res, next) {
   const videogame = req.body;
-  //console.log('in the api now', videogame);
-  // const { name, description, release, rating, platforms } = req.body;
-  // console.log( req.body);
+  // const { name, description, release, rating } = req.body;
   try {
-    // const game = await Videogame.create({
-    //   name: name,
-    //   description: description,
-    //   release:release,
-    //   rating:rating,
-    //   platforms:platforms.map((otro) => ({id:otro.id,name:otro.name})),
-
-    // });
-    // const genress = genres.map((genre) => genre.id);
-    // game.addGenres(genress);
-    // return res.json(game);
     const game = await Videogame.create({
       ...videogame,
     });
     const genres = videogame.genres.map((genre) => genre.id);
-    const platform = videogame.platforms.map((platform) =>  platform.id)
-    console.log(genres);
-    console.log(platform);
-    game.addPlatform(platform); 
-    game.addGenres(genres); //[4,5]saco los id y los inserto en la tabla, asociando al game
+    const platform = videogame.platforms.map((platform) => platform.id);
+    game.addPlatform(platform);
+    game.addGenres(genres);
     return res.send(game);
   } catch (error) {
     next(error);
