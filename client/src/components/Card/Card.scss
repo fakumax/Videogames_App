@@ -9,7 +9,7 @@ $letterv2: 2px $base-blue;
   transition: 0.3s;
   width: 200px;
   height: 280px;
-  background-color: #292929;
+  background-color: #202020;
   transition: all .3s ease-in-out;
   margin: 1rem;
   border-radius: 5px;
@@ -20,15 +20,27 @@ $letterv2: 2px $base-blue;
 	}
   }
   .card__img{
-      width: 150px;
       justify-content: center;
       align-items: center;
       max-height: 182px;
+      display:block;
+      margin:auto;
+ 
   }
-  img{
-    display:block;
-    margin:auto;
+  .card__div{
+    border-radius: 5px;
+    position: inherit;
+    width: 100%;
+    height: 40%;
+     img{
+        border-radius: 5px 5px 0px 0px;
+        padding:0px;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
     }
+    
+  }
   .card__header-meta{
     display: flex;
     margin: 0;
@@ -40,13 +52,19 @@ $letterv2: 2px $base-blue;
     }
 
   .card__header-title{
-    text-transform: uppercase;
+    text-transform:capitalize;
     margin: 0 0 .25em;
-    color: $base-yellow;
+    color: white;
     font-size: 1.5rem;
     display: block; 
-    font-family: sans-serif;
+    font-family:retro;
+    text-decoration: none;
+    text-align: center;
     -webkit-text-stroke: 0;
+    &:hover{
+        color: rgb(160, 160, 160);
+        transition-duration:0.3s;
+    }
   
   }
 /* On mouse-over, add a deeper shadow */
@@ -56,16 +74,16 @@ $letterv2: 2px $base-blue;
   
 /* Add some padding inside the card container */
 .card-container {
-  padding: 30px 30px;
-  display: flex;
-  flex-direction: column;
-  
-  
-  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 130px;
+    margin-top: 10px;
 }
 .card__img{
   padding-top:2rem;
- 
+  //border-radius: 5px  5px 0px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
