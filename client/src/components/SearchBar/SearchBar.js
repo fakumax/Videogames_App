@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getVideogame } from '../../actions/index';
-//import './SearchBar.scss';
+import './SearchBar.scss';
 //----------Icons----------
 import { VscSearch } from 'react-icons/vsc';
 //-------------------------
@@ -25,7 +25,9 @@ const SearchBar = () => {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button type='submit'><VscSearch className = 'icon-search' /></button>
+      <button type='submit'>
+        <VscSearch className='icon-search' />
+      </button>
     </form>
   );
 };
