@@ -3,13 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllVideogames, getAllGenre } from '../../actions/index';
 import SearchBar from '../SearchBar/SearchBar';
 import Cards from '../Cards/Cards';
+import Filters from '../Filters/Filters';
 import './Home.scss';
 
 const Home = () => {
-
-  const { videogame } = useSelector((state) => state);
-  const { videogame_genres } = useSelector((state) => state);
-
+  const { videogame , videogame_genres} = useSelector((state) => state);
+  
   const dispatch = useDispatch();
 
   const [videogameList, setVideogameList] = useState([]);
@@ -20,20 +19,21 @@ const Home = () => {
     dispatch(getAllGenre());
   }, [dispatch]);
 
+
   useEffect(() => {
     setVideogameList(videogame);
   }, [videogame]);
 
   //------ PAGINATION-----------
 
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState([]);
 
   useEffect(() => {
     setTotalPages(Math.ceil(videogameList.length / itemsPerPage));
-    setPage(videogameList.slice(0, 12));
+    setPage(videogameList.slice(0, 15));
   }, [videogameList]);
 
   useEffect(() => {
@@ -54,15 +54,29 @@ const Home = () => {
   };
   return (
     <div className='Home'>
-      <div>
-      <h1>Videogames </h1>
-        <h1>Search </h1>
-        <h1>Create </h1>
-      </div>
-      <div className ='BodyComplete'>
-        <SearchBar />
-        <Cards videogames={page} />
-      </div>
+      {(videogame_genres.length>15 && videogame.length>15)? (
+        <>
+          <div className='Aside'>
+            <h1>Videogames </h1>
+            <h1>Search </h1>
+            <h1>Create </h1>
+          </div>
+
+          <div className='BodyComplete'>
+            <SearchBar />
+            <div className='filters'>
+              <Filters
+                videogame={videogame}
+                setVideogameList={setVideogameList}
+                videogame_genres={videogame_genres}
+              />
+            </div>
+            <Cards videogames={page} />
+          </div>
+        </>
+      ) : (
+        <p className='Body_search'>LOADING</p>
+      )}
     </div>
   );
 };

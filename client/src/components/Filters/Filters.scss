@@ -1,0 +1,19 @@
+.Filter-Type, .Filter-Videogame, .Filter-Rating {
+ 
+    padding: 10px 16px;
+    background-color: #202020;
+    border-radius: 8px;
+    color: #fff;
+    font-family: retro;
+    select {
+        border: none;
+        cursor: pointer;
+        background-color: #202020;
+        font-family: retro;
+        color: #fff;
+        text-transform: uppercase;
+      
+        
+    } 
+    
+}

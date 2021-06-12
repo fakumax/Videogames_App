@@ -19,7 +19,7 @@ async function getAllGenreAPI(req, res, next) {
       },
     });
     const dbplatform = await funcPlatform();
-    return res.json(dbresult);
+    return await res.json(dbresult);
   } catch (err) {
     next(err);
   }
