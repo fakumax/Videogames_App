@@ -9,7 +9,7 @@ const Card = (props) => {
         <img className='card__img' src={props.img} alt='' />
       </div>
       <div className='card-container'>
-        <Link className='card__header-title' to={`/videogame/${props.id}`}>
+        <Link className='card__header-title' to={`/game/${props.id}`}>
           <span>{props.name}</span>
         </Link>
         <span className='card__header-meta'>
