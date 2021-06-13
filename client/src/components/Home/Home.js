@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllVideogames, getAllGenre } from '../../actions/index';
+import { getAllVideogames, getAllGenre, getAllPlatforms} from '../../actions/index';
 import SearchBar from '../SearchBar/SearchBar';
 import Cards from '../Cards/Cards';
 import Filters from '../Filters/Filters';
@@ -11,7 +11,7 @@ import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
 
 const Home = () => {
-  const { videogame, videogame_genres } = useSelector((state) => state);
+  const { videogame, videogame_genres,videogame_platforms } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(getAllVideogames());
     dispatch(getAllGenre());
+    dispatch(getAllPlatforms());
   }, [dispatch]);
 
   useEffect(() => {

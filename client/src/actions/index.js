@@ -2,14 +2,17 @@ import axios from 'axios';
 import {
   GET_VIDEOGAMES,
   GET_GENRES,
+  GET_PLATFORMS,
   GET_NAME_VIDEOGAME,
   GET_VIDEOGAME_BY_ID,
   POST_VIDEOGAME,
+
 } from '../action-types/index';
 const {
     VIDEOGAME_LOCAL,
     GENRES_LOCAL,
-    SEARCH_VIDEOGAME
+    SEARCH_VIDEOGAME,
+    PLATFORMS_LOCAL,
 } = require('../constants');
 
 export const getAllVideogames = () => async (dispatch) => {
@@ -29,6 +32,18 @@ export const getAllGenre = () => async (dispatch) => {
     const { data } = await axios.get(`${GENRES_LOCAL}`);
     dispatch({
       type: GET_GENRES,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllPlatforms = () => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`${PLATFORMS_LOCAL}`);
+    dispatch({
+      type: GET_PLATFORMS,
       payload: data,
     });
   } catch (error) {

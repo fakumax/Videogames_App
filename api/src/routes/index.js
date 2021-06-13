@@ -9,8 +9,11 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 const genreRoute = require('./genre');
 const videogameRoute = require('./videogame');
+const platformsRoute = require('./platform');
+
 
 router.use('/genres', genreRoute);
 router.use('/videogames', videogameRoute);
+router.use('/platforms', platformsRoute);
 
 module.exports = router;
