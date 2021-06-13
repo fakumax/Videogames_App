@@ -1,0 +1,38 @@
+.paged_both{
+    display: flex;
+    border:transparent;
+    justify-content: space-around;
+    width: 200px;
+       
+    button{
+        border:transparent;
+        background:#202020;
+        color:white;
+        padding:15px;
+        display: flex;
+        font-weight: 700;
+        border-radius: 5px;
+
+        &:hover{
+            border: 2px solid yellow;
+    
+        }
+    }
+}
+.paged-left{
+   flex-direction: row;
+   
+   
+}
+.paged-right{
+    flex-direction: row;
+}
+.paged_videogame{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    color:white;
+    margin-bottom:4rem;
+    
+  }

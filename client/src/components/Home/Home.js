@@ -5,6 +5,7 @@ import SearchBar from '../SearchBar/SearchBar';
 import Cards from '../Cards/Cards';
 import Filters from '../Filters/Filters';
 import Logo from '../../assets/img/videogame.png';
+import Paged from '../Paged/Paged';
 import { Link } from 'react-router-dom';
 import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
@@ -78,6 +79,11 @@ const Home = () => {
               />
             </div>
             <Cards videogames={page} />
+            <Paged
+              // totalPages={totalPages}
+              // currentPage={currentPage}
+              handlePageclick={handlePageclick}
+            />
           </div>
         </>
       ) : (
