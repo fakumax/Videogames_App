@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { postVideogame } from '../../actions/index';
+import './Form.scss';
+import Back from '../Back/Back';
 //------VALIDATE FUNCTION -----
 
 export function validate(input) {
@@ -26,17 +28,177 @@ export function validate(input) {
       errors.rating = 'Rating is invalid';
     }
     
-  
-    return errors;
+      return errors;
   }
 
 
+//----------- FORM -------------
 const Form = () => {
-    return (
-        <div>
-            <h1>form1</h1>
-        </div>
+  const { videogame_genres } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
+  const [listTypes, setlistTypes] = useState([]);
+  const [input, setInput] = useState({
+    name: '',
+    description: '',
+    release: '',
+    rating: '',
+  });
+
+  const handleInputChange = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
+
+    setErrors(
+      validate({
+        ...input,
+        [e.target.name]: e.target.value,
+      })
     );
+  };
+
+  const handleSelect = (pokemon) => {
+    setlistTypes([...listTypes, { id: pokemon }]);
+    setInput({
+      ...input,
+      types: [...listTypes],
+    });
+  };
+
+  const createVideogame = (e) => {
+    e.preventDefault();
+    dispatch(postVideogame(input));
+  };
+
+  //---ADD ANOTHER---
+  const handleAddOther = (e) => {
+    e.preventDefault();
+    setInput({
+      name: '',
+      description: '',
+      release: '',
+      rating: '',
+    });
+  };
+  return (
+    <>
+      <Back className='link-back' />
+      <div className='container-form'>
+        <div className='wrapper'>
+          <div className='contacts'>
+            <h2>Create your Videogame</h2>
+          </div>
+
+          <div className='login-box'>
+           <form onSubmit={createVideogame}>
+              <div className='user-box'>
+                <label className='label-form'>Name</label>
+                <input
+                  id='name'
+                  name='name'
+                  type='text'
+                  autoComplete='off'
+                  className='form-control-material'
+                  required
+                  value={input.name}
+                  onChange={handleInputChange}
+                />
+                {errors.name && <p className='danger'>{errors.name}</p>}
+              </div>
+              <div className='user-box'>
+                <label className='label-form'>Description</label>
+                <input
+                  id='description'
+                  name='description'
+                  type='text'
+                  autoComplete='off'
+                  className='form-control-material'
+                  value={input.description}
+                  onChange={handleInputChange}
+                />
+                {errors.description && <p className='danger'>{errors.description}</p>}
+              </div>
+              <div className='user-box'>
+                <label className='label-form'>Release</label>
+                <input
+                  id='release'
+                  name='release'
+                  type='text'
+                  autoComplete='off'
+                  className='form-control-material'
+                  value={input.release}
+                  onChange={handleInputChange}
+                />
+                {errors.release && <p className='danger'>{errors.release}</p>}
+              </div>
+              <div className='user-box'>
+                <label className='label-form'>Rating</label>
+                <input
+                  id='rating'
+                  name='rating'
+                  type='text'
+                  autoComplete='off'
+                  className='form-control-material'
+                  value={input.rating}
+                  onChange={handleInputChange}
+                />
+                {errors.rating && <p className='danger'>{errors.rating}</p>}
+              </div>
+             
+             {/* GENRES ARRAY MAP*/}
+              <div className='user-box'>
+                <label className='select-label-form'>Genres</label>
+                <select
+                  name='genres'
+                  className='select-form'
+                  onChange={(e) => handleSelect(e.target.value)}
+                  multiple
+                >
+                  {videogame_genres?.map((item, i) => {
+                    return (
+                      <option key={i} value={item.id}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+                {/* PLATFORMS ARRAY MAP*/}
+                <div className='user-box'>
+                <label className='select-label-form'>Platforms</label>
+                <select
+                  name='platforms'
+                  className='select-form'
+                  onChange={(e) => handleSelect(e.target.value)}
+                  multiple
+                >
+                  {videogame_genres?.map((item, i) => {
+                    return (
+                      <option key={i} value={item.id}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              
+
+              <button type='submit' className='full-width'>
+                Create
+              </button>
+              <button type='submit'
+                className='full-width'
+                onClick={handleAddOther} > Add Other
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Form;

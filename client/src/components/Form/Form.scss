@@ -1,0 +1,37 @@
+
+.container-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+.login-box {
+    display: flex;
+    width: 400px;
+    padding:10px;
+    justify-content: center;
+  
+}
+.user-box{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.label-form{
+    padding-right:20px;
+}
+.contacts h2{
+    text-transform: uppercase;
+    text-align: center;
+ 
+}
+p.danger{
+    position:absolute;
+    padding-top:10px;
+    font-size: 10px;
+    text-align:end;
+    display: flex;
+    justify-content: flex-end;
+    color:red;
+}
+
