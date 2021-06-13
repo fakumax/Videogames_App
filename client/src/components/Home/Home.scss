@@ -6,7 +6,27 @@
     height: 100vh;
 }
 .Aside{
-    color:green;
+    color:white;
+    padding-left:30px;
+    padding-top:30px;
+    img{
+        width: 120px;
+
+    }
+    a.icon-create{
+        padding:10px;
+        color:white;
+        text-decoration: none;
+        background-color:  #202020;
+        border-radius: 5px;
+        text-align: center;
+        text-transform: uppercase;
+        
+     &:hover{
+         border: 1px solid yellow;
+
+     } 
+    }
 }
 .filters{
     display:flex;

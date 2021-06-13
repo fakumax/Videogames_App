@@ -4,11 +4,14 @@ import { getAllVideogames, getAllGenre } from '../../actions/index';
 import SearchBar from '../SearchBar/SearchBar';
 import Cards from '../Cards/Cards';
 import Filters from '../Filters/Filters';
+import Logo from '../../assets/img/videogame.png';
+import { Link } from 'react-router-dom';
+import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
 
 const Home = () => {
-  const { videogame , videogame_genres} = useSelector((state) => state);
-  
+  const { videogame, videogame_genres } = useSelector((state) => state);
+
   const dispatch = useDispatch();
 
   const [videogameList, setVideogameList] = useState([]);
@@ -18,7 +21,6 @@ const Home = () => {
     dispatch(getAllVideogames());
     dispatch(getAllGenre());
   }, [dispatch]);
-
 
   useEffect(() => {
     setVideogameList(videogame);
@@ -54,12 +56,16 @@ const Home = () => {
   };
   return (
     <div className='Home'>
-      {(videogame_genres.length>15 && videogame.length>15)? (
+      {videogame_genres.length > 15 && videogame.length > 15 ? (
         <>
           <div className='Aside'>
-            <h1>Videogames </h1>
-            <h1>Search </h1>
-            <h1>Create </h1>
+            <Link to='/'>
+              <img src={Logo} alt='videogames icon' />
+            </Link>
+            <p>Videogame Finder</p>
+            <Link to='/create' className = 'icon-create'>
+                Create <VscAdd className='icon-search' />
+            </Link>
           </div>
 
           <div className='BodyComplete'>
