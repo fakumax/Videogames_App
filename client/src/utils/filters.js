@@ -15,7 +15,7 @@ export const handleFilterDbApi = (orderMe, videogame) => {
   /* ORDER BY NAME A-Z Z-A & RATING*/
 export const orderByName = (orderMe, videogame) => {
     const array = [...videogame];
-    console.log(videogame);
+    //console.log(videogame);
     if (orderMe === 'default') {
       array.sort((a, b) => {
         let na = a.rating,

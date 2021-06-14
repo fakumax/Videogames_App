@@ -90,13 +90,19 @@ async function getVideogameId(req, res, next) {
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
-        include: {
+        include: [{
           model: Genre,
           attributes: ['id', 'name'],
           through: {
             attributes: [],
-          },
-        },
+          }},
+          { 
+          model: Platform,
+          attributes: ['id', 'name'],
+          through: {
+            attributes: [],
+          }}],
+        
       });
       return dbData
         ? res.json(dbData)

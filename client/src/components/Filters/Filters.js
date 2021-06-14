@@ -8,7 +8,7 @@ import {
 } from '../../utils/filters';
 
 const Filters = ({ videogame, setVideogameList, videogame_genres }) => {
-  console.log(videogame_genres);
+  //console.log(videogame_genres);
   const [gameSelected, setgameSelected] = useState(null);
   useEffect(() => {
     setVideogameList(videogame);

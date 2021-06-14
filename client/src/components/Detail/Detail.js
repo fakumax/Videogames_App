@@ -32,8 +32,7 @@ const Detail = (props) => {
               Genre: {videogame_by_id.genres?.map((v) => v.name).join(' - ')}
             </span>
             <span className='details_platforms'>
-              Platforms:{' '}
-              {videogame_by_id.platforms?.map((v) => v.name).join(' - ')}
+              Platforms:{videogame_by_id.platforms?.map((v) => v.name).join(' - ')}
             </span>
             <span>Description: {videogame_by_id.description}</span>
           </div>

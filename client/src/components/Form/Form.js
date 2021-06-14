@@ -34,10 +34,10 @@ export function validate(input) {
 
 //----------- FORM -------------
 const Form = () => {
-  const { videogame_genres } = useSelector((state) => state);
+  const { videogame_genres, videogame_platforms } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
-  const [listTypes, setlistTypes] = useState([]);
+  const [listGenres, setlistGenres] = useState([]);
   const [input, setInput] = useState({
     name: '',
     description: '',
@@ -59,11 +59,21 @@ const Form = () => {
     );
   };
 
-  const handleSelect = (pokemon) => {
-    setlistTypes([...listTypes, { id: pokemon }]);
+  const handleSelect = (genre) => {
+   console.log("Genre Selected : " + genre);
+    //setlistGenres([...listGenres, { id: genre }]);
+    const valuesGenre = [];
+    for (let i=0; i<genre.length; i++) {
+      valuesGenre.push(genre[i].value);
+      //console.log(valuesGenre[i]);
+    }
+    setlistGenres({ id: valuesGenre });
+    //console.log(listGenres);
+
+
     setInput({
       ...input,
-      types: [...listTypes],
+      genres: [listGenres],
     });
   };
 
@@ -81,6 +91,8 @@ const Form = () => {
       release: '',
       rating: '',
     });
+
+    
   };
   return (
     <>
@@ -153,8 +165,9 @@ const Form = () => {
                 <select
                   name='genres'
                   className='select-form'
-                  onChange={(e) => handleSelect(e.target.value)}
+                  onChange={(e) => handleSelect(e.target.selectedOptions)}
                   multiple
+                  value={listGenres}
                 >
                   {videogame_genres?.map((item, i) => {
                     return (
@@ -175,7 +188,7 @@ const Form = () => {
                   onChange={(e) => handleSelect(e.target.value)}
                   multiple
                 >
-                  {videogame_genres?.map((item, i) => {
+                  {videogame_platforms?.map((item, i) => {
                     return (
                       <option key={i} value={item.id}>
                         {item.name}
