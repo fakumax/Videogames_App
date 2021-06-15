@@ -14,17 +14,17 @@ export function validate(input) {
     }
     if (!input.description) {
       errors.description = 'Description is required';
-    } else if (!/^[ 1-9_]{1,4}$/.test(input.description)) {
+    } else if (!/^(?!\s*$).+$/.test(input.description)) {
       errors.description = 'Description is invalid';
     }
-    if (!input.release) {
-      errors.release = 'Release is required';
-    } else if (!/^[ 1-9_]{1,4}$/.test(input.release)) {
-      errors.release = 'Release is invalid';
-    }
+    // if (!input.release) {
+    //   errors.release = 'Release is required';
+    // } else if (!/^((0|1)\d{1})-((0|1|2)\d{1})-((19|20)\d{2})$/.test(input.release)) {
+    //   errors.release = 'Release is invalid';
+    // }
     if (!input.rating) {
       errors.rating = 'Rating is required';
-    } else if (!/^[ 1-9_]{1,4}$/.test(input.rating)) {
+    } else if (!/^[ 0-5_]+(\.[0-9][0-9]?)?$/.test(input.rating)) {
       errors.rating = 'Rating is invalid';
     }
     
@@ -36,8 +36,12 @@ export function validate(input) {
 const Form = () => {
   const { videogame_genres, videogame_platforms } = useSelector((state) => state);
   const dispatch = useDispatch();
+
   const [errors, setErrors] = useState({});
+
   const [listGenres, setlistGenres] = useState([]);
+ const [listPlatforms, setlistPlatforms] = useState([]);
+  
   const [input, setInput] = useState({
     name: '',
     description: '',
@@ -50,7 +54,6 @@ const Form = () => {
       ...input,
       [e.target.name]: e.target.value,
     });
-
     setErrors(
       validate({
         ...input,
@@ -59,27 +62,37 @@ const Form = () => {
     );
   };
 
-  const handleSelect = (genre) => {
-   console.log("Genre Selected : " + genre);
-    //setlistGenres([...listGenres, { id: genre }]);
-    const valuesGenre = [];
-    for (let i=0; i<genre.length; i++) {
-      valuesGenre.push(genre[i].value);
-      //console.log(valuesGenre[i]);
-    }
-    setlistGenres({ id: valuesGenre });
-    //console.log(listGenres);
-
-
+  const handleSelectGenre = (e) => {
+    let target = e.target;
+		let name = target.name;
+    let value = Array.from(target.selectedOptions, option => ({id:option.value}));
+    setlistGenres({
+      [name]: value
+    });
+    console.log(listGenres);
     setInput({
       ...input,
-      genres: [listGenres],
+      genres: listGenres.genres,
+    });
+  };
+  const handleSelectPlatform = (e) => {
+    let target = e.target;
+		let name = target.name;
+    let value = Array.from(target.selectedOptions, option => ({id:option.value}));
+    setlistPlatforms({
+      [name]: value
+    });
+    console.log(listPlatforms);
+    setInput({
+      ...input,
+      platforms: listPlatforms.platforms,
     });
   };
 
   const createVideogame = (e) => {
     e.preventDefault();
     dispatch(postVideogame(input));
+    console.log(input);
   };
 
   //---ADD ANOTHER---
@@ -137,7 +150,7 @@ const Form = () => {
                 <input
                   id='release'
                   name='release'
-                  type='text'
+                  type='date'
                   autoComplete='off'
                   className='form-control-material'
                   value={input.release}
@@ -150,7 +163,9 @@ const Form = () => {
                 <input
                   id='rating'
                   name='rating'
-                  type='text'
+                  type='number'
+                  min="0" max="5"
+                  step="0.01"
                   autoComplete='off'
                   className='form-control-material'
                   value={input.rating}
@@ -159,15 +174,20 @@ const Form = () => {
                 {errors.rating && <p className='danger'>{errors.rating}</p>}
               </div>
              
+
+
+
+
              {/* GENRES ARRAY MAP*/}
               <div className='user-box'>
                 <label className='select-label-form'>Genres</label>
                 <select
                   name='genres'
                   className='select-form'
-                  onChange={(e) => handleSelect(e.target.selectedOptions)}
-                  multiple
+                  onChange={handleSelectGenre}
+                  multiple={true}
                   value={listGenres}
+                
                 >
                   {videogame_genres?.map((item, i) => {
                     return (
@@ -185,8 +205,9 @@ const Form = () => {
                 <select
                   name='platforms'
                   className='select-form'
-                  onChange={(e) => handleSelect(e.target.value)}
-                  multiple
+                   onChange={handleSelectPlatform}
+                  multiple={true}
+                  value={listPlatforms}
                 >
                   {videogame_platforms?.map((item, i) => {
                     return (
