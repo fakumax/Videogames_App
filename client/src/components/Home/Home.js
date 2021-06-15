@@ -11,7 +11,7 @@ import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
 
 const Home = () => {
-  const { videogame, videogame_genres,videogame_platforms } = useSelector((state) => state);
+  const { videogame, videogame_genres,videogame_platforms,videogame_name } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
@@ -79,7 +79,10 @@ const Home = () => {
                 videogame_genres={videogame_genres}
               />
             </div>
+            {videogame_name.length>0 ? <Cards videogames={videogame_name} />:
             <Cards videogames={page} />
+            }
+
             <Paged
               // totalPages={totalPages}
               // currentPage={currentPage}
