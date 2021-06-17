@@ -62,8 +62,17 @@ async function getAllVideogames(req, res, next) {
           },
         },
       });
-      const { data } = await axios.get(`${GAMES_URL}${API_KEY}`);
-      const resp = data.results.map((game) => ({
+
+      //----------------------------------------
+      containerGames = [];
+      let next = `${GAMES_URL}${API_KEY}`;
+      for (x = 1; x < 5; x++) {
+          const { data } = await axios.get(next);
+          next = data.next;
+          containerGames.push(data.results);
+      }
+      //----------------------------------------
+      const resp = containerGames.flat().map((game) => ({
         id: game.id,
         name: game.name,
         img: game.background_image,
@@ -90,19 +99,22 @@ async function getVideogameId(req, res, next) {
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
-        include: [{
-          model: Genre,
-          attributes: ['id', 'name'],
-          through: {
-            attributes: [],
-          }},
-          { 
-          model: Platform,
-          attributes: ['id', 'name'],
-          through: {
-            attributes: [],
-          }}],
-        
+        include: [
+          {
+            model: Genre,
+            attributes: ['id', 'name'],
+            through: {
+              attributes: [],
+            },
+          },
+          {
+            model: Platform,
+            attributes: ['id', 'name'],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
       });
       return dbData
         ? res.json(dbData)

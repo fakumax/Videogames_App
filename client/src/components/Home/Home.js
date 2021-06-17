@@ -84,7 +84,7 @@ const Home = () => {
             }
 
             <Paged
-              totalPages={totalPages}
+              //totalPages={totalPages}
               // currentPage={currentPage}
               handlePageclick={handlePageclick}
             />

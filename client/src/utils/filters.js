@@ -69,9 +69,9 @@ export const filterByGenre = (gameSelected, videogame) => {
     let filter = [];
     for (let i = 0; i < videogame.length; i++) {
       const element = videogame[i];
-      for (let x = 0; x < element.types.length; x++) {
-        const types = element.types[x];
-        if (types.name == gameSelected) {
+      for (let x = 0; x < element.genres.length; x++) {
+        const genres = element.genres[x];
+        if (genres.name == gameSelected) {
           filter.push(videogame[i]);
         }
       }
