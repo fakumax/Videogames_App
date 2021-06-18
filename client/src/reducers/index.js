@@ -1,7 +1,6 @@
 import {
     GET_VIDEOGAMES,
     GET_GENRES,
-    GET_NAME_VIDEOGAME,
     GET_VIDEOGAME_BY_ID,
     POST_VIDEOGAME,
     GET_PLATFORMS,
@@ -11,7 +10,6 @@ import {
     videogame: [],
     videogame_genres: {},
     videogame_platforms: {},
-    videogame_name: {},
     videogame_by_id: {},
     videogame_create:{},
     
@@ -37,13 +35,7 @@ import {
             videogame_platforms: action.payload,
             
           };  
-      case GET_NAME_VIDEOGAME:
-        return {
-          ...state,
-          videogame_name: action.payload,
-          
-        };
-      case GET_VIDEOGAME_BY_ID:
+       case GET_VIDEOGAME_BY_ID:
         return {
           ...state,
           videogame_by_id: action.payload,

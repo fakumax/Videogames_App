@@ -11,18 +11,20 @@ import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
 
 const Home = () => {
-  const { videogame, videogame_genres,videogame_platforms,videogame_name } = useSelector((state) => state);
-
+  const { videogame, videogame_genres,videogame_platforms } = useSelector((state) => state);
   const dispatch = useDispatch();
-
   const [videogameList, setVideogameList] = useState([]);
-  const [filter, setFilters] = useState(false);
+  const [search , setSearch] = useState('');
 
   useEffect(() => {
-    dispatch(getAllVideogames());
+    dispatch(getAllVideogames(search));
     dispatch(getAllGenre());
     dispatch(getAllPlatforms());
-  }, [dispatch]);
+  }, [dispatch,search]);
+
+  const handleSearchChange = (newSearch)=>{
+    setSearch(newSearch);
+  };
 
   useEffect(() => {
     setVideogameList(videogame);
@@ -71,7 +73,7 @@ const Home = () => {
           </div>
 
           <div className='BodyComplete'>
-            <SearchBar />
+            <SearchBar handleSearchChange={handleSearchChange} />
             <div className='filters'>
               <Filters
                 videogame={videogame}
@@ -79,9 +81,9 @@ const Home = () => {
                 videogame_genres={videogame_genres}
               />
             </div>
-            {videogame_name.length>0 ? <Cards videogames={videogame_name} />:
+            
             <Cards videogames={page} />
-            }
+            
 
             <Paged
               //totalPages={totalPages}

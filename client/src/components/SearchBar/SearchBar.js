@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getVideogame } from '../../actions/index';
 import './SearchBar.scss';
 //----------Icons----------
-//import { VscSearch } from 'react-icons/vsc';
+import { VscSearch } from 'react-icons/vsc';
 //-------------------------
-const SearchBar = () => {
-  const dispatch = useDispatch();
-  const [name, setName] = useState('');
+const SearchBar = ({ handleSearchChange }) => {
 
-  const submitVideogame = (e) => {
-    e.preventDefault();
-    dispatch(getVideogame(name));
+  const [input, setInput] = useState('');
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
   };
 
   return (
-    <form onSubmit={submitVideogame} className='formStyle'>
+    <div className='formStyle'>
       <input
         id='name'
         name='name'
         type='text'
         autoComplete='off'
         placeholder='Search Game'
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={input}
+        onChange={handleInputChange}
       />
-      {/* <button type='submit'>
+      <button type='submit' onClick={ () => handleSearchChange(input)}>
         <VscSearch className='icon-search' />
-      </button> */}
-    </form>
-    
+      </button>
+    </div>
   );
 };
 

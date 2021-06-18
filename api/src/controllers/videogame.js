@@ -5,9 +5,6 @@ const { API_KEY } = process.env;
 const { Sequelize, Op } = require('sequelize');
 var validator = require('validator');
 
-var count = 0;
-var offsetDb = 0;
-
 async function getGamebyName(name) {
   const { data } = await axios.get(`${GAMES_URL}${API_KEY}&search=${name}`);
 
@@ -66,10 +63,15 @@ async function getAllVideogames(req, res, next) {
       //----------------------------------------
       containerGames = [];
       let next = `${GAMES_URL}${API_KEY}`;
-      for (x = 1; x < 5; x++) {
+      for (indice = 1; indice < 5; indice++) {
+
           const { data } = await axios.get(next);
-          next = data.next;
+          if (data.next === null){
+            containerGames.push(data.results);
+            break; 
+          }
           containerGames.push(data.results);
+          next = data.next;
       }
       //----------------------------------------
       const resp = containerGames.flat().map((game) => ({

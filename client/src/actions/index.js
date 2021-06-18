@@ -3,7 +3,6 @@ import {
   GET_VIDEOGAMES,
   GET_GENRES,
   GET_PLATFORMS,
-  GET_NAME_VIDEOGAME,
   GET_VIDEOGAME_BY_ID,
   POST_VIDEOGAME,
 
@@ -11,13 +10,12 @@ import {
 const {
     VIDEOGAME_LOCAL,
     GENRES_LOCAL,
-    SEARCH_VIDEOGAME,
     PLATFORMS_LOCAL,
 } = require('../constants');
 
-export const getAllVideogames = () => async (dispatch) => {
+export const getAllVideogames = (name) => async (dispatch) => {
   try {
-    const {data} = await axios.get(`${VIDEOGAME_LOCAL}`);
+    const {data} = await axios.get(`${VIDEOGAME_LOCAL}?name=${name}`);
     dispatch({
       type: GET_VIDEOGAMES,
       payload: data,
@@ -44,18 +42,6 @@ export const getAllPlatforms = () => async (dispatch) => {
     const { data } = await axios.get(`${PLATFORMS_LOCAL}`);
     dispatch({
       type: GET_PLATFORMS,
-      payload: data,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getVideogame = (name) => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`${SEARCH_VIDEOGAME}${name} `);
-    dispatch({
-      type: GET_NAME_VIDEOGAME,
       payload: data,
     });
   } catch (error) {
