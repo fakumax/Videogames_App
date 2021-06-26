@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.485b8ffe.chunk.css",
+    "main.js": "/static/js/main.6e92d3a8.chunk.js",
+    "main.js.map": "/static/js/main.6e92d3a8.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.a3525211.js",
+    "runtime-main.js.map": "/static/js/runtime-main.a3525211.js.map",
+    "static/js/2.85e7992c.chunk.js": "/static/js/2.85e7992c.chunk.js",
+    "static/js/2.85e7992c.chunk.js.map": "/static/js/2.85e7992c.chunk.js.map",
+    "static/js/3.f72aaff9.chunk.js": "/static/js/3.f72aaff9.chunk.js",
+    "static/js/3.f72aaff9.chunk.js.map": "/static/js/3.f72aaff9.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.485b8ffe.chunk.css.map": "/static/css/main.485b8ffe.chunk.css.map",
+    "static/js/2.85e7992c.chunk.js.LICENSE.txt": "/static/js/2.85e7992c.chunk.js.LICENSE.txt",
+    "static/media/index.scss": "/static/media/Retro_Gaming.c1a52a60.ttf",
+    "static/media/random-img.f7b4dcc1.png": "/static/media/random-img.f7b4dcc1.png",
+    "static/media/videogame.6a3ef65f.png": "/static/media/videogame.6a3ef65f.png",
+    "static/media/Landing.scss": "/static/media/wallpaper.e31dbb34.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a3525211.js",
+    "static/js/2.85e7992c.chunk.js",
+    "static/css/main.485b8ffe.chunk.css",
+    "static/js/main.6e92d3a8.chunk.js"
+  ]
+}
