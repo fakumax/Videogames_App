@@ -11,7 +11,7 @@ import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';
 
 const Home = () => {
-  const { videogame, videogame_genres,videogame_platforms } = useSelector((state) => state);
+  const { videogame, videogame_genres } = useSelector((state) => state);
   const dispatch = useDispatch();
   const [videogameList, setVideogameList] = useState([]);
   const [search , setSearch] = useState('');
