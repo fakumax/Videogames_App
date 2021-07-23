@@ -7,15 +7,10 @@ import {
   POST_VIDEOGAME,
 
 } from '../action-types/index';
-const {
-    VIDEOGAME_LOCAL,
-    GENRES_LOCAL,
-    PLATFORMS_LOCAL,
-} = require('../constants');
 
 export const getAllVideogames = (name) => async (dispatch) => {
   try {
-    const {data} = await axios.get(`${VIDEOGAME_LOCAL}?name=${name}`);
+    const {data} = await axios.get(`/videogames?name=${name}`);
     dispatch({
       type: GET_VIDEOGAMES,
       payload: data,
@@ -27,7 +22,7 @@ export const getAllVideogames = (name) => async (dispatch) => {
 
 export const getAllGenre = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${GENRES_LOCAL}`);
+    const { data } = await axios.get(`/genres`);
     dispatch({
       type: GET_GENRES,
       payload: data,
@@ -39,7 +34,7 @@ export const getAllGenre = () => async (dispatch) => {
 
 export const getAllPlatforms = () => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${PLATFORMS_LOCAL}`);
+    const { data } = await axios.get(`/platforms`);
     dispatch({
       type: GET_PLATFORMS,
       payload: data,
@@ -51,7 +46,7 @@ export const getAllPlatforms = () => async (dispatch) => {
 
 export const getVideogameId = (id) => async (dispatch) => {
   try {
-    const { data } = await axios.get(`${VIDEOGAME_LOCAL}/${id} `);
+    const { data } = await axios.get(`/videogames/${id} `);
     dispatch({
       type: GET_VIDEOGAME_BY_ID,
       payload: data,
@@ -63,7 +58,7 @@ export const getVideogameId = (id) => async (dispatch) => {
 
 export const postVideogame = (makeVideogame) => async (dispatch) => {
   try {
-    const { data } = await axios.post(`${VIDEOGAME_LOCAL}`, {
+    const { data } = await axios.post(`/videogames`, {
       name: makeVideogame.name,
       description: makeVideogame.description,
       release: makeVideogame.release,
