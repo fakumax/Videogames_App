@@ -1,12 +1,11 @@
 const axios = require('axios');
 const { Videogame, Genre, Platform } = require('../db');
-const { GAMES_URL } = require('../constants');
 const { API_KEY } = process.env;
 const { Sequelize, Op } = require('sequelize');
 var validator = require('validator');
 
 async function getGamebyName(name) {
-  const { data } = await axios.get(`${GAMES_URL}${API_KEY}&search=${name}`);
+  const { data } = await axios.get(`https://api.rawg.io/api/games${API_KEY}&search=${name}`);
 
   const allGamesApi = data.results.map((game) => ({
     id: game.id,
@@ -62,7 +61,7 @@ async function getAllVideogames(req, res, next) {
 
       //----------------------------------------
       containerGames = [];
-      let next = `${GAMES_URL}${API_KEY}`;
+      let next = `https://api.rawg.io/api/games${API_KEY}`;
       for (indice = 1; indice < 5; indice++) {
 
           const { data } = await axios.get(next);
@@ -122,7 +121,7 @@ async function getVideogameId(req, res, next) {
         ? res.json(dbData)
         : res.status(404).json({ message: 'The Game has not been found.' });
     } else {
-      const { data } = await axios.get(`${GAMES_URL}/${id}${API_KEY}`);
+      const { data } = await axios.get(`https://api.rawg.io/api/games/${id}${API_KEY}`);
 
       return res.json({
         id: data.id,
