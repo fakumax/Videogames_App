@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllVideogames, getAllGenre, getAllPlatforms} from '../../actions/index';
-import SearchBar from '../SearchBar/SearchBar';
-import Cards from '../Cards/Cards';
-import Filters from '../Filters/Filters';
+import SearchBar from '../SearchBar/SearchBar.jsx';
+import Cards from '../Cards/Cards.jsx';
+import Filters from '../Filters/Filters.jsx';
 import Logo from '../../assets/img/videogame.png';
-import Paged from '../Paged/Paged';
+import Paged from '../Paged/Paged.jsx';
 import { Link } from 'react-router-dom';
 import { VscAdd } from 'react-icons/vsc';
 import './Home.scss';

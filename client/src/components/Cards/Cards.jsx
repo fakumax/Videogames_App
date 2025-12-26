@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../Card/Card';
+import Card from '../Card/Card.jsx';
 import defaultimg from '../../assets/img/random-img.png';
 import './Cards.scss';
 

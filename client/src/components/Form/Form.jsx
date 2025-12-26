@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postVideogame } from '../../actions/index';
 import './Form.scss';
-import Back from '../Back/Back';
-//------VALIDATE FUNCTION -----
+import Back from '../Back/Back.jsx';
 
 export function validate(input) {
     let errors = {};
