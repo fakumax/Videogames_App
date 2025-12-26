@@ -1,18 +1,19 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { getVideogameId } from '../../actions/index';
 import defaultimg from '../../assets/img/random-img.png';
-import Back from '../Back/Back';
+import Back from '../Back/Back.jsx';
 import './Detail.scss';
 
-const Detail = (props) => {
+const Detail = () => {
+  const { id } = useParams();
   const { videogame_by_id } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const id = props.match.params.id;
     dispatch(getVideogameId(id));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <>

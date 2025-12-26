@@ -1,0 +1,9 @@
+{
+  "name": "videogames-app",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "dev:api": "pnpm --filter api dev",
+    "dev:client": "pnpm --filter client dev"
+  }
+}

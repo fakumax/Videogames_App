@@ -1,10 +1,12 @@
 const axios = require('axios');
-const { Genre, Platform } = require('../db');
-const { API_KEY } = process.env;
+const { Genre } = require('../db');
+const { RAWG_API_KEY } = process.env;
+
+const RAWG_URL = 'https://api.rawg.io/api';
 
 async function getAllGenreAPI(req, res, next) {
   try {
-    const { data } = await axios.get(`https://api.rawg.io/api/genres${API_KEY}`); //, {
+    const { data } = await axios.get(`${RAWG_URL}/genres?key=${RAWG_API_KEY}`);
     const results = await data.results.map((valor) =>
       Genre.findOrCreate({
         where: {

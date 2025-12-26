@@ -1,11 +1,12 @@
 const axios = require('axios');
 const { Videogame, Genre, Platform } = require('../db');
-const { API_KEY } = process.env;
-const { Sequelize, Op } = require('sequelize');
-var validator = require('validator');
+const { RAWG_API_KEY } = process.env;
+const { Op } = require('sequelize');
+
+const RAWG_URL = 'https://api.rawg.io/api';
 
 async function getGamebyName(name) {
-  const { data } = await axios.get(`https://api.rawg.io/api/games${API_KEY}&search=${name}`);
+  const { data } = await axios.get(`${RAWG_URL}/games?key=${RAWG_API_KEY}&search=${name}`);
 
   const allGamesApi = data.results.map((game) => ({
     id: game.id,
@@ -33,11 +34,9 @@ async function getGamebyName(name) {
   return allGamesDb ? allGamesDb.concat(allGamesApi) : allGamesApi;
 }
 
-/* Async Function Get ALL Videogame  */
 async function getAllVideogames(req, res, next) {
   const { name } = req.query;
   if (name) {
-    //----------------------------------------
     try {
       const gamesByName = await getGamebyName(name);
       res.json(gamesByName);
@@ -45,9 +44,7 @@ async function getAllVideogames(req, res, next) {
       next(error);
     }
   } else {
-    //----------------------------------------
     try {
-      //-----------BD CONSULTA------------------
       const dbData = await Videogame.findAll({
         attributes: ['id', 'name', 'rating'],
         include: {
@@ -59,20 +56,15 @@ async function getAllVideogames(req, res, next) {
         },
       });
 
-      //----------------------------------------
-      containerGames = [];
-      let next = `https://api.rawg.io/api/games${API_KEY}`;
-      for (indice = 1; indice < 5; indice++) {
-
-          const { data } = await axios.get(next);
-          if (data.next === null){
-            containerGames.push(data.results);
-            break; 
-          }
-          containerGames.push(data.results);
-          next = data.next;
+      let containerGames = [];
+      let nextUrl = `${RAWG_URL}/games?key=${RAWG_API_KEY}`;
+      for (let i = 1; i < 5; i++) {
+        const { data } = await axios.get(nextUrl);
+        containerGames.push(data.results);
+        if (data.next === null) break;
+        nextUrl = data.next;
       }
-      //----------------------------------------
+
       const resp = containerGames.flat().map((game) => ({
         id: game.id,
         name: game.name,
@@ -91,11 +83,11 @@ async function getAllVideogames(req, res, next) {
   }
 }
 
-/* Async Function Get VIDEOGAME ID */
 async function getVideogameId(req, res, next) {
   const { id } = req.params;
   try {
-    if (validator.isUUID(id)) {
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+    if (isUUID) {
       const dbData = await Videogame.findByPk(id, {
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
@@ -121,7 +113,7 @@ async function getVideogameId(req, res, next) {
         ? res.json(dbData)
         : res.status(404).json({ message: 'The Game has not been found.' });
     } else {
-      const { data } = await axios.get(`https://api.rawg.io/api/games/${id}${API_KEY}`);
+      const { data } = await axios.get(`${RAWG_URL}/games/${id}?key=${RAWG_API_KEY}`);
 
       return res.json({
         id: data.id,
@@ -145,14 +137,10 @@ async function getVideogameId(req, res, next) {
   }
 }
 
-/* Async Function Post VIDEOGAME  */
 async function postVideogame(req, res, next) {
   const videogame = req.body;
-  // const { name, description, release, rating } = req.body;
   try {
-    const game = await Videogame.create({
-      ...videogame,
-    });
+    const game = await Videogame.create({ ...videogame });
     const genres = videogame.genres.map((genre) => genre.id);
     const platform = videogame.platforms.map((platform) => platform.id);
     game.addPlatform(platform);
