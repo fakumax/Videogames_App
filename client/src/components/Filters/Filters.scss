@@ -1,19 +1,23 @@
-.Filter-Type, .Filter-Videogame, .Filter-Rating {
- 
-    padding: 10px 16px;
-    background-color: #202020;
-    border-radius: 8px;
-    color: #fff;
-    font-family: retro;
-    select {
-        border: none;
-        cursor: pointer;
-        background-color: #202020;
+.Filter-Container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .filter-label {
+        font-size: 0.85rem;
+        color: #888;
+        white-space: nowrap;
         font-family: retro;
-        color: #fff;
-        text-transform: uppercase;
-      
-        
-    } 
-    
+    }
+
+    // Ancho mínimo para los selects
+    > div {
+        min-width: 120px;
+    }
+}
+
+.Filter-Genre {
+    > div {
+        min-width: 220px;
+    }
 }
