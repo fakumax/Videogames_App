@@ -13,6 +13,7 @@ async function getGamebyName(name) {
     name: game.name,
     img: game.background_image,
     genres: game.genres.map((genre) => ({ id: genre.id, name: genre.name })),
+    platforms: game.platforms?.map((p) => ({ id: p.platform.id, name: p.platform.name })) || [],
     rating: game.rating,
   }));
 
@@ -23,13 +24,22 @@ async function getGamebyName(name) {
         [Op.iLike]: `%${name}%`,
       },
     },
-    include: {
-      model: Genre,
-      attributes: ['id', 'name'],
-      through: {
-        attributes: [],
+    include: [
+      {
+        model: Genre,
+        attributes: ['id', 'name'],
+        through: {
+          attributes: [],
+        },
       },
-    },
+      {
+        model: Platform,
+        attributes: ['id', 'name'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
   });
   return allGamesDb ? allGamesDb.concat(allGamesApi) : allGamesApi;
 }
@@ -47,13 +57,22 @@ async function getAllVideogames(req, res, next) {
     try {
       const dbData = await Videogame.findAll({
         attributes: ['id', 'name', 'rating'],
-        include: {
-          model: Genre,
-          attributes: ['id', 'name'],
-          through: {
-            attributes: [],
+        include: [
+          {
+            model: Genre,
+            attributes: ['id', 'name'],
+            through: {
+              attributes: [],
+            },
           },
-        },
+          {
+            model: Platform,
+            attributes: ['id', 'name'],
+            through: {
+              attributes: [],
+            },
+          },
+        ],
       });
 
       let containerGames = [];
@@ -73,9 +92,13 @@ async function getAllVideogames(req, res, next) {
           id: genre.id,
           name: genre.name,
         })),
+        platforms: game.platforms?.map((p) => ({
+          id: p.platform.id,
+          name: p.platform.name,
+        })) || [],
         rating: game.rating,
       }));
-      const response = await dbData.concat(resp);
+      const response = resp.concat(dbData);
       return res.json(response);
     } catch (err) {
       next(err);

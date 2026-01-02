@@ -6,9 +6,18 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/videogames': 'http://localhost:3001',
-      '/genres': 'http://localhost:3001',
-      '/platforms': 'http://localhost:3001',
+      '/videogames': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/genres': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+      '/platforms': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
     }
   }
 })

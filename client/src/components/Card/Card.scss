@@ -2,91 +2,137 @@ $base-blue: #3a5da9;
 $base-yellow: #ffcb05;
 $letterv2: 2px $base-blue;
 
+.card-link {
+  text-decoration: none;
+  display: block;
+}
+
 .card {
- 
-  /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  width: 200px;
-  height: 280px;
-  background-color: #202020;
   transition: all .3s ease-in-out;
+  width: 220px;
+  min-height: 320px;
+  background-color: #202020;
   margin: 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
 
-  
-	&:hover {
-		box-shadow: 2px 10px 20px 10px rgba(black, .2);
-	}
+  &:hover {
+    box-shadow: 0 10px 30px 0 rgba(0,0,0,0.4);
+    border-color: #ffff00;
+    transform: translateY(-5px);
+
+    .card__div img {
+      transform: scale(1.05);
+    }
+
+    .card__header-title {
+      color: #ffff00;
+    }
   }
-  .card__img{
-      justify-content: center;
-      align-items: center;
-      max-height: 182px;
-      display:block;
-      margin:auto;
- 
-  }
-  .card__div{
-    border-radius: 5px;
-    position: inherit;
+}
+
+.card__div {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+
+  img {
     width: 100%;
-    height: 40%;
-     img{
-        border-radius: 5px 5px 0px 0px;
-        padding:0px;
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-    }
-    
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
-  .card__header-meta{
-    display: flex;
-    margin: 0;
-    color: #999;
-    font-family: sans-serif;
-    -webkit-text-stroke: 0;
-    text-transform: uppercase;
-    font-size:12px;
-    }
+}
 
-  .card__header-title{
-    text-transform:capitalize;
-    margin: 0 0 .25em;
-    color: white;
-    font-size: 1.5rem;
-    display: block; 
-    font-family:retro;
-    text-decoration: none;
-    text-align: center;
-    -webkit-text-stroke: 0;
-    &:hover{
-        color: rgb(160, 160, 160);
-        transition-duration:0.3s;
-    }
-  
-  }
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-  box-shadow: 0 10px 20px 0 rgba(0,0,0,0.2);
-}
-  
-/* Add some padding inside the card container */
-.card-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 130px;
-    margin-top: 10px;
-    text-align: center;
-}
-.card__img{
-  padding-top:2rem;
-  //border-radius: 5px  5px 0px 0px;
+.card__rating {
+  position: absolute;
+  top: 8px;
+  right: 8px;
   display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: bold;
+
+  .star-icon {
+    color: #ffff00;
+    font-size: 0.9rem;
+  }
+}
+
+.card__img {
   justify-content: center;
   align-items: center;
-  align-content: center;
+  display: block;
+  margin: auto;
+}
+
+.card__header-meta {
+  display: flex;
+  margin: 0;
+  color: #888;
+  font-family: sans-serif;
+  -webkit-text-stroke: 0;
+  text-transform: uppercase;
+  font-size: 11px;
+  text-align: center;
+}
+
+.card__header-title {
+  text-transform: capitalize;
+  margin: 0 0 .25em;
+  color: white;
+  font-size: 1.1rem;
+  display: block;
+  font-family: retro;
+  text-align: center;
+  -webkit-text-stroke: 0;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.card__platforms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.platform-tag {
+  background-color: #333;
+  color: #aaa;
+  font-size: 9px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+.platform-more {
+  background-color: #ffff00;
+  color: #1a1a1a;
+  font-size: 9px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
