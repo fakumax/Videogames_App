@@ -93,7 +93,16 @@ const Home = () => {
           </div>
         </>
       ) : (
-        <p className='Body_search'>LOADING</p>
+        <div className='Loading'>
+          <div className='Loading__content'>
+            <p className='Loading__title'>LOADING...</p>
+            <div className='Loading__bar'>
+              <div className='Loading__progress'></div>
+            </div>
+            <p className='Loading__message'>💤 Despertando la base de datos...</p>
+            <p className='Loading__submessage'>La DB estaba en modo ahorro de energía. Solo pasa la primera vez, luego va como un rayo ⚡</p>
+          </div>
+        </div>
       )}
     </div>
   );
