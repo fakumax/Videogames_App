@@ -5,19 +5,25 @@ const { Op } = require('sequelize');
 
 const RAWG_URL = 'https://api.rawg.io/api';
 
-async function getGamebyName(name) {
-  const { data } = await axios.get(`${RAWG_URL}/games?key=${RAWG_API_KEY}&search=${name}`);
-
-  const allGamesApi = data.results.map((game) => ({
+const mapRawgResults = (results) =>
+  results.map((game) => ({
     id: game.id,
     name: game.name,
     img: game.background_image,
-    genres: game.genres.map((genre) => ({ id: genre.id, name: genre.name })),
-    platforms: game.platforms?.map((p) => ({ id: p.platform.id, name: p.platform.name })) || [],
+    genres: game.genres.map((genre) => ({
+      id: genre.id,
+      name: genre.name,
+    })),
+    platforms:
+      game.platforms?.map((p) => ({
+        id: p.platform.id,
+        name: p.platform.name,
+      })) || [],
     rating: game.rating,
   }));
 
-  const allGamesDb = await Videogame.findAll({
+async function fetchDbGamesByName(name) {
+  return Videogame.findAll({
     attributes: ['id', 'name', 'rating'],
     where: {
       name: {
@@ -41,68 +47,65 @@ async function getGamebyName(name) {
       },
     ],
   });
-  return allGamesDb ? allGamesDb.concat(allGamesApi) : allGamesApi;
+}
+
+async function fetchDbGamesAll() {
+  return Videogame.findAll({
+    attributes: ['id', 'name', 'rating'],
+    include: [
+      {
+        model: Genre,
+        attributes: ['id', 'name'],
+        through: {
+          attributes: [],
+        },
+      },
+      {
+        model: Platform,
+        attributes: ['id', 'name'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
+}
+
+async function fetchRawg({ name, page, pageSize }) {
+  const params = [`key=${RAWG_API_KEY}`, `page=${page}`, `page_size=${pageSize}`];
+  if (name) params.push(`search=${encodeURIComponent(name)}`);
+  const { data } = await axios.get(`${RAWG_URL}/games?${params.join('&')}`);
+  return data;
 }
 
 async function getAllVideogames(req, res, next) {
   const { name } = req.query;
-  if (name) {
-    try {
-      const gamesByName = await getGamebyName(name);
-      res.json(gamesByName);
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    try {
-      const dbData = await Videogame.findAll({
-        attributes: ['id', 'name', 'rating'],
-        include: [
-          {
-            model: Genre,
-            attributes: ['id', 'name'],
-            through: {
-              attributes: [],
-            },
-          },
-          {
-            model: Platform,
-            attributes: ['id', 'name'],
-            through: {
-              attributes: [],
-            },
-          },
-        ],
-      });
+  const page = Number(req.query.page) || 1;
+  const pageSize = Number(req.query.page_size) || 15;
 
-      let containerGames = [];
-      let nextUrl = `${RAWG_URL}/games?key=${RAWG_API_KEY}`;
-      for (let i = 1; i < 5; i++) {
-        const { data } = await axios.get(nextUrl);
-        containerGames.push(data.results);
-        if (data.next === null) break;
-        nextUrl = data.next;
-      }
+  try {
+    // DB: sólo la primera página (y si aplica filtro por nombre)
+    const dbData = name ? await fetchDbGamesByName(name) : page === 1 ? await fetchDbGamesAll() : [];
 
-      const resp = containerGames.flat().map((game) => ({
-        id: game.id,
-        name: game.name,
-        img: game.background_image,
-        genres: game.genres.map((genre) => ({
-          id: genre.id,
-          name: genre.name,
-        })),
-        platforms: game.platforms?.map((p) => ({
-          id: p.platform.id,
-          name: p.platform.name,
-        })) || [],
-        rating: game.rating,
-      }));
-      const response = resp.concat(dbData);
-      return res.json(response);
-    } catch (err) {
-      next(err);
-    }
+    // API RAWG: se pide la página solicitada
+    const apiData = await fetchRawg({ name, page, pageSize });
+    const apiMapped = mapRawgResults(apiData.results || []);
+
+    // Total informado por RAWG + los de DB en la primera página (si corresponde)
+    const total = (apiData.count || 0) + dbData.length;
+    const hasMore = Boolean(apiData.next);
+
+    const combined = dbData.concat(apiMapped);
+
+    return res.json({
+      results: combined,
+      page,
+      pageSize,
+      total,
+      hasMore,
+    });
+  } catch (err) {
+    next(err);
   }
 }
 

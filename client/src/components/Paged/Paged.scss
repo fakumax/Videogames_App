@@ -1,38 +1,62 @@
-.paged_both{
+.paged_videogame {
+    width: auto;
     display: flex;
-    border:transparent;
-    justify-content: space-around;
-    width: 200px;
-       
-    button{
-        border:transparent;
-        background:#202020;
-        color:white;
-        padding:15px;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: white;
+    margin: 1.5rem 0 3.5rem;
+}
+
+.label-pagination {
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.paged_both {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    button {
+        border: transparent;
+        background: #202020;
+        color: white;
+        padding: 14px 18px;
         display: flex;
         font-weight: 700;
-        border-radius: 5px;
+        border-radius: 8px;
+        transition: outline 0.2s ease, transform 0.2s ease;
 
-        &:hover{
+        &:hover {
             outline: 2px solid yellow;
-    
+            transform: translateY(-1px);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            outline: none;
+            transform: none;
         }
     }
 }
-.paged-left{
-   flex-direction: row;
-   
-   
-}
-.paged-right{
+
+.paged-left,
+.paged-right {
     flex-direction: row;
 }
-.paged_videogame{
-    width: auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    color:white;
-    margin-bottom:4rem;
-    
-  }
+
+.spinner {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

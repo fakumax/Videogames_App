@@ -1,43 +1,111 @@
-.Home{
-    display:flex;
+.Home {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100vh;
 }
-.BodyComplete{
-    width: 100vw;
-    height: 100vh;
+
+.Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #1a1a1a;
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        text-decoration: none;
+        
+        img {
+            width: 80px;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    &__title {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    &__create {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        color: white;
+        text-decoration: none;
+        background-color: #202020;
+        border: 1px solid #444;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+
+        .icon-add {
+            font-size: 1.1rem;
+        }
+
+        &:hover {
+            border-color: yellow;
+            color: yellow;
+        }
+    }
 }
-.Aside{
-    color:white;
-    padding-left:30px;
-    padding-top:30px;
-    img{
+
+.MainRow {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.BodyComplete {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.Aside {
+    color: white;
+    padding-left: 30px;
+    padding-top: 30px;
+
+    img {
         width: 120px;
 
     }
-    a.icon-create{
-        padding:10px;
-        color:white;
+
+    a.icon-create {
+        padding: 10px;
+        color: white;
         text-decoration: none;
-        background-color:  #202020;
+        background-color: #202020;
         border-radius: 5px;
         text-align: center;
         text-transform: uppercase;
-        
-     &:hover{
-         border: 1px solid yellow;
 
-     } 
+        &:hover {
+            border: 1px solid yellow;
+
+        }
     }
 }
-.filters{
-    display:flex;
-    justify-content: space-around;
-}
-.Body_search{
-    display:flex;
-    justify-content: center;
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    align-content: center;
-    width: 100%;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 2rem;
 }
 
 .Loading {
@@ -94,12 +162,53 @@
 }
 
 @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0.3; }
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0.3;
+    }
 }
 
 @keyframes loading {
-    0% { transform: translateX(-100%); }
-    50% { transform: translateX(250%); }
-    100% { transform: translateX(-100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50% {
+        transform: translateX(250%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.Footer {
+    color: #d1d1d1;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding-bottom: 2rem;
+    display: flex;
+    gap: 0.35rem;
+    margin: 0 auto;
+
+    &__name {
+        color: #f5e27f;
+        transition: color 0.2s ease;
+        cursor: default;
+
+        &:hover {
+            color: yellow;
+        }
+    }
+
+    &__year {
+        color: #aaa;
+        font-weight: 500;
+    }
 }
