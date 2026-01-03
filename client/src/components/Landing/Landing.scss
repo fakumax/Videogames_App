@@ -15,17 +15,17 @@
         color:#fff;
         background-color: transparent;
         padding: 1rem 2rem;
-        border-radius: 0.25rem;
+        border: 2px solid #fff;
+        border-radius: 0.5rem;
         font-size: 1rem;
-        //position: absolute ;
+        cursor: pointer;
+        transition: all 0.3s ease;
         
         &:hover{
-          
-            
-            border: 0.25rem solid yellow;
-            margin:-0.15rem;
-            cursor:pointer;
-           
+            border-color: yellow;
+            color: yellow;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+            transform: scale(1.05);
         }
     }
    

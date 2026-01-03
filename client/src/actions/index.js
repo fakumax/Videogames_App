@@ -8,15 +8,31 @@ import {
 
 } from '../action-types/index';
 
-export const getAllVideogames = (name) => async (dispatch) => {
+export const getAllVideogames = (name = '', page = 1, pageSize = 15, append = false) => async (dispatch) => {
   try {
-    const {data} = await axios.get(`/videogames?name=${name}`);
+    const { data } = await axios.get(`/videogames`, {
+      params: {
+        name,
+        page,
+        page_size: pageSize,
+      },
+    });
+
     dispatch({
       type: GET_VIDEOGAMES,
-      payload: data,
+      payload: {
+        results: data.results,
+        hasMore: data.hasMore,
+        page: data.page,
+        total: data.total,
+      },
+      meta: { append },
     });
+
+    return data; // permite esperar en el componente
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 

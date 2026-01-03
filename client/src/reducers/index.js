@@ -12,7 +12,8 @@ import {
     videogame_platforms: {},
     videogame_by_id: {},
     videogame_create:{},
-    
+    hasMore: false,
+    apiPage: 1,
   };
   
   const rootReducer = (state = initialState, action) => {
@@ -20,8 +21,11 @@ import {
       case GET_VIDEOGAMES:
         return {
           ...state,
-          videogame: action.payload,
-          
+          videogame: action.meta?.append
+            ? [...state.videogame, ...action.payload.results]
+            : action.payload.results,
+          hasMore: action.payload.hasMore,
+          apiPage: action.payload.page,
         };
       case GET_GENRES:
         return {

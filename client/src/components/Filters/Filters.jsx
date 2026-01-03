@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import Select from 'react-select';
 import './Filters.scss';
 //---------- UTILS FILTER -------------
 import {
@@ -7,90 +8,173 @@ import {
   handleFilterDbApi,
 } from '../../utils/filters';
 
+// Estilos personalizados para react-select
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: '#2a2a2a',
+    borderRadius: '24px',
+    border: state.isFocused ? '2px solid #ffff00' : '2px solid #3a3a3a',
+    boxShadow: state.isFocused ? '0 0 15px rgba(255, 255, 0, 0.3)' : 'none',
+    padding: '4px 8px',
+    cursor: 'pointer',
+    minHeight: '44px',
+    '&:hover': {
+      borderColor: '#ffff00',
+      boxShadow: '0 0 10px rgba(255, 255, 0, 0.2)',
+    },
+  }),
+  menu: (provided) => ({
+    ...provided,
+    backgroundColor: '#2a2a2a',
+    border: '2px solid #3a3a3a',
+    borderRadius: '12px',
+    marginTop: '8px',
+    overflow: 'hidden',
+    zIndex: 100,
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    padding: '0',
+    maxHeight: '250px',
+    '&::-webkit-scrollbar': {
+      width: '8px',
+    },
+    '&::-webkit-scrollbar-track': {
+      background: '#1a1a1a',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: '#ffff00',
+      borderRadius: '4px',
+    },
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected
+      ? '#ffff00'
+      : state.isFocused
+      ? '#3a3a3a'
+      : '#2a2a2a',
+    color: state.isSelected ? '#1a1a1a' : '#fff',
+    padding: '12px 16px',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    '&:active': {
+      backgroundColor: '#ffff00',
+      color: '#1a1a1a',
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: '#fff',
+    textTransform: 'uppercase',
+    fontSize: '0.9rem',
+  }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: '#888',
+  }),
+  dropdownIndicator: (provided, state) => ({
+    ...provided,
+    color: '#ffff00',
+    transition: 'transform 0.2s ease',
+    transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : 'rotate(0)',
+    '&:hover': {
+      color: '#ffff00',
+    },
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+  input: (provided) => ({
+    ...provided,
+    color: '#fff',
+  }),
+};
+
 const Filters = ({ videogame, setVideogameList, videogame_genres }) => {
-  //console.log(videogame_genres);
-  const [gameSelected, setgameSelected] = useState(null);
   useEffect(() => {
     setVideogameList(videogame);
   }, [videogame]);
 
-  const FilterByDbApi = (orderMe) => {
-    const filteredByDbApi = handleFilterDbApi(orderMe, videogame);
+  // Opciones para los selects
+  const filterOptions = [
+    { value: 'default', label: 'All' },
+    { value: '1', label: 'Db' },
+    { value: '2', label: 'Api' },
+  ];
+
+  const orderOptions = [
+    { value: 'default', label: 'Rating' },
+    { value: '1', label: 'A-Z' },
+    { value: '2', label: 'Z-A' },
+  ];
+
+  const genreOptions = [
+    { value: 'default', label: 'All Videogames' },
+    ...(videogame_genres
+      ? videogame_genres.map((item) => ({
+          value: item.name,
+          label: item.name,
+        }))
+      : []),
+  ];
+
+  const FilterByDbApi = (selected) => {
+    const filteredByDbApi = handleFilterDbApi(selected.value, videogame);
     setVideogameList(filteredByDbApi);
   };
 
-  const [orderBy, setOrderBy] = useState([]);
-  const handleOrderChange = (orderMe) => {
-    const orderedByName = orderByName(orderMe, videogame);
+  const handleOrderChange = (selected) => {
+    const orderedByName = orderByName(selected.value, videogame);
     setVideogameList(orderedByName);
   };
 
-  const handleSelectChange = (gameSelected) => {
-    setgameSelected(gameSelected);
-    const filteredByType = filterByGenre(gameSelected, videogame);
+  const handleSelectChange = (selected) => {
+    const filteredByType = filterByGenre(selected.value, videogame);
     setVideogameList(filteredByType);
   };
-  const [filterBy, setFilterBy] = useState('');
-  const [GameGenre, setGameGenre] = useState('');
 
-  const handleType_videogame = (e) => {
-    setGameGenre({
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleFilter_by = (e) => {
-    setFilterBy({
-      [e.target.name]: e.target.value,
-    });
-  };
   return (
     <>
-        {/*SELECT WHERE IS LOCATED DB OR API*/}
-        <div className='Filter-Type'>
-          <label>Filter : </label>
-          <select
-            defaultValue={'default'}
-            name='filter_by'
-            onChange={(e) => FilterByDbApi(e.target.value)}>
-            <option key={0} value='default'>All</option>
-            <option key={1} value={1}>Db</option>
-            <option key={2} value={2}>Api</option>
-          </select>
-        </div>
-     
-        {/*SELECT BY VIDEOGAME GENRE*/}
-        <div className='Filter-Videogame'>
-          <label>by Videogame: </label>
-          <select
-            defaultValue={'default'}
-            onChange={(e) => handleSelectChange(e.target.value)}>
-            <option key={1234} value={'default'}>
-              All Videogames
-            </option>
-            {videogame_genres &&
-              videogame_genres.map((item, i) => {
-                return (
-                  <option key={i} value={item.name}>
-                    {item.name}
-                  </option>
-                );
-              })}
-          </select>
-        </div>
-    
+      {/*SELECT WHERE IS LOCATED DB OR API*/}
+      <div className='Filter-Container'>
+        <span className='filter-label'>Filter:</span>
+        <Select
+          defaultValue={filterOptions[0]}
+          options={filterOptions}
+          styles={customStyles}
+          onChange={FilterByDbApi}
+          isSearchable={false}
+          classNamePrefix='custom-select'
+        />
+      </div>
+
+      {/*SELECT BY VIDEOGAME GENRE*/}
+      <div className='Filter-Container Filter-Genre'>
+        <span className='filter-label'>by Videogame:</span>
+        <Select
+          defaultValue={genreOptions[0]}
+          options={genreOptions}
+          styles={customStyles}
+          onChange={handleSelectChange}
+          isSearchable={true}
+          placeholder='Search genre...'
+          classNamePrefix='custom-select'
+        />
+      </div>
 
       {/*SELECT ORDER BY VIDEOGAME A-Z Z-A RATING*/}
-      <div className='Filter-Rating'>
-        <label>Order by : </label>
-        <select
-          defaultValue={'default'}
-          onChange={(e) => handleOrderChange(e.target.value)}
-        >
-          <option key={0} value={'default'}>Rating</option>
-          <option key={1} value={1}>A-Z</option>
-          <option key={2} value={2}>Z-A</option>
-        </select>
+      <div className='Filter-Container'>
+        <span className='filter-label'>Order by:</span>
+        <Select
+          defaultValue={orderOptions[0]}
+          options={orderOptions}
+          styles={customStyles}
+          onChange={handleOrderChange}
+          isSearchable={false}
+          classNamePrefix='custom-select'
+        />
       </div>
     </>
   );
