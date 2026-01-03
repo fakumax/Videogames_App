@@ -117,7 +117,7 @@ const Home = () => {
           </div>
 
           <footer className='Footer'>
-            <span>Hecho con</span>{' '}
+            <span>Hecho por</span>{' '}
             <span className='Footer__name'>Facundo Vergara</span>{' '}
             <span className='Footer__year'>© 2026</span>
           </footer>

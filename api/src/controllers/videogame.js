@@ -24,7 +24,7 @@ const mapRawgResults = (results) =>
 
 async function fetchDbGamesByName(name) {
   return Videogame.findAll({
-    attributes: ['id', 'name', 'rating'],
+    attributes: ['id', 'name', 'rating', 'img'],
     where: {
       name: {
         [Op.iLike]: `%${name}%`,
@@ -51,7 +51,7 @@ async function fetchDbGamesByName(name) {
 
 async function fetchDbGamesAll() {
   return Videogame.findAll({
-    attributes: ['id', 'name', 'rating'],
+    attributes: ['id', 'name', 'rating', 'img'],
     include: [
       {
         model: Genre,

@@ -1,37 +1,178 @@
-
-.container-form{
+.Form {
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    padding: 2rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-  
+
+    &__container {
+        width: 100%;
+        max-width: 600px;
+        background: #242424;
+        border-radius: 12px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        margin-top: 1rem;
+    }
+
+    &__title {
+        text-align: center;
+        color: #f5e27f;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #333;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    &__row {
+        display: flex;
+        gap: 1rem;
+
+        @media (max-width: 500px) {
+            flex-direction: column;
+        }
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &--half {
+            flex: 1;
+        }
+    }
+
+    &__label {
+        color: #ccc;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    &__input {
+        background: #2a2a2a;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 0.8rem 1rem;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+
+        &::placeholder {
+            color: #666;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #f5e27f;
+            box-shadow: 0 0 0 2px rgba(245, 226, 127, 0.2);
+        }
+
+        &:hover {
+            border-color: #555;
+        }
+    }
+
+    &__textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    &__select {
+        .css-13cymwt-control,
+        .css-t3ipsp-control {
+            min-height: 42px;
+        }
+    }
+
+    &__error {
+        color: #ff6b6b;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+
+        @media (max-width: 400px) {
+            flex-direction: column;
+        }
+    }
+
+    &__btn {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        &--primary {
+            background: #f5e27f;
+            color: #1a1a1a;
+
+            &:hover:not(:disabled) {
+                background: #e5d26f;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(245, 226, 127, 0.3);
+            }
+        }
+
+        &--secondary {
+            background: transparent;
+            color: #888;
+            border: 1px solid #444;
+
+            &:hover {
+                border-color: #666;
+                color: #fff;
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    }
+
+    &__spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #1a1a1a;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
 }
-.login-box {
-    display: flex;
-    width: 400px;
-    padding:10px;
-    justify-content: center;
-  
-}
-.user-box{
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-}
-.label-form{
-    padding-right:20px;
-}
-.contacts h2{
-    text-transform: uppercase;
-    text-align: center;
- 
-}
-p.danger{
-    position:absolute;
-    padding-top:10px;
-    font-size: 10px;
-    text-align:end;
-    display: flex;
-    justify-content: flex-end;
-    color:red;
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
